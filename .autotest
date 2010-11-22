@@ -1,0 +1,4 @@
+Autotest.add_hook :initialize do |autotest|
+  autotest.find_directories << "lib/btree"
+  autotest.find_directories << "test/btree"
+end
