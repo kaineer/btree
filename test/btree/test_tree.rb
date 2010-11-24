@@ -24,4 +24,8 @@ describe "BTree::Tree" do
       @tree.add_value( 10 )
     end
   end
+
+  describe "#add_value, Adding to full root node" do
+    
+  end
 end
