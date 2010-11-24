@@ -1,5 +1,7 @@
 require 'rubygems'
-require 'test/unit'
+# require 'test/unit'
 require 'test/spec'
-require 'redgreen'
+unless ENV[ "EMACS" ] == "t"
+  require 'redgreen'
+end
 require 'mocha'

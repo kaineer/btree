@@ -17,7 +17,6 @@ module BTree
 
       if leaf?
         add_into_node( value )
-        :here
       else
         subnode_for( value )
       end
@@ -25,10 +24,13 @@ module BTree
 
     def add_into_node( value )
       insert_at( insertion_point_for( value ), value )
+
+      ( full? ? :splitme : :here )
     end
 
     attr_reader :values
     attr_reader :tree
+    attr_reader :offsets
 
     #
     def subnode_for( value )
@@ -46,6 +48,12 @@ module BTree
     #
     def leaf?
       true
+    end
+
+    #
+    def full?
+      return false unless @tree
+      return @values.size >= @tree.elements_per_node
     end
 
     #

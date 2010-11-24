@@ -52,6 +52,7 @@ describe "BTree node" do
       @tree = mock( "tree" )
       @tree.stubs( :elements_per_node ).returns( 11 )
       @node = BTree::Node.new( @tree )
+      @node.stubs( :full? ).returns( false )
     end
 
     it "should access tree's elements per node value when adding value" do
@@ -67,13 +68,12 @@ describe "BTree node" do
 
     it "should add into node when leaf? returns true" do
       @node.stubs( :leaf? ).returns( true )
-      @node.expects( :add_into_node )
+      @node.expects( :add_into_node ).with( 10 )
       @node.add_value( 10 )
     end
 
     it "should return :here when value added into node" do
       @node.stubs( :leaf? ).returns( true )
-      @node.stubs( :add_into_node )
       @node.add_value( 10 ).should.be == :here
     end
 
@@ -82,6 +82,12 @@ describe "BTree node" do
       @node.expects( :subnode_for ).with( "value-tag" )
 
       @node.add_value( "value-tag" )
+    end
+
+    it "should return :splitme when is full after value insering" do
+      @node.stubs( :leaf ).returns( true )
+      @node.stubs( :full? ).returns( true )
+      @node.add_value( 10 ).should.be == :splitme
     end
   end
 

@@ -1,0 +1,4 @@
+task :default do
+  tests = Dir[ "test/btree/test_*.rb" ]
+  system( "specrb -as -Ilib:test #{tests * ' '}" )
+end
