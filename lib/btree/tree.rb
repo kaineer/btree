@@ -6,16 +6,23 @@ module BTree
       @root = nil
     end
 
-    def add_value( value )
+    def root
       @root ||= new_node
-      node = @root
-      case node.add_value( value )
+    end
+
+    def add_value( value )
+      find_node_and_add_value( self.root, value )
+    end
+
+    def find_node_and_add_value( node, value )
+      add_result = node.add_value( value )
+      case add_result
+      when :here
+        return # there's nothing to do anymore
       when :splitme
         split_node( node )
-      when :here
-        # do nothing
       when BTree::Node
-        # proceed deeper
+        find_node_and_add_value( add_result, value )
       end
     end
   end

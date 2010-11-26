@@ -26,6 +26,28 @@ describe "BTree::Tree" do
   end
 
   describe "#add_value, Adding to full root node" do
-    
+    before do
+      @tree = BTree::Tree.new
+      @node = mock( "node" )
+      @node.stubs( :add_value )
+
+      @subnode = BTree::Node.new( @tree )
+      
+      @tree.stubs( :root ).returns( @node )
+    end
+
+    it "should try to split node, that got to be full" do
+      @node.stubs( :add_value ).with( 10 ).returns( :splitme )
+      @tree.expects( :split_node ).with( @node )
+
+      @tree.add_value( 10 )
+    end
+
+    it "should try to add value to subnode returned" do
+      @node.stubs( :add_value ).with( 10 ).returns( @subnode )
+      @subnode.expects( :add_value ).with( 10 )
+
+      @tree.add_value( 10 )
+    end
   end
 end
