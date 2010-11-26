@@ -50,4 +50,10 @@ describe "BTree::Tree" do
       @tree.add_value( 10 )
     end
   end
+
+  describe "#split_node" do
+    
+  end
+
+  # ALSO: need to store tree on disk somehow
 end
