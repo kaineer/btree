@@ -28,10 +28,21 @@ module BTree
 
     def split_node( node, parent = nil )
       unless parent
+        #
+        # In case we're splitting root node,
+        #   left/right halves come to just created nodes
+        #   median value comes into root node
+        #
         left_node = new_node( node.left_half )
         right_node = new_node( node.right_half )
         node.reset( [ node.median ], [ left_node, right_node ] )
       else
+        #
+        # Otherwise
+        #   node keeps left half of values 
+        #   new node gets right half
+        #   median value comes to parent (and maybe, splits it)
+        #
         # TODO: code for splitting when parent is provided
       end
     end
