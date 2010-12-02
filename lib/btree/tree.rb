@@ -25,5 +25,11 @@ module BTree
         find_node_and_add_value( add_result, value )
       end
     end
+
+    def split_node( node )
+      left_node = new_node( node.left_half )
+      right_node = new_node( node.right_half )
+      node.reset( [ node.median ], [ left_node, right_node ] )
+    end
   end
 end
