@@ -39,6 +39,12 @@ module BTree
       @tree.node_at( @offsets[ insertion_point_for( value ) ])
     end
 
+    #
+    def reset( values, subnodes = nil )
+      @values = values
+      @offsets = subnodes.map{|node|node.offset} if subnodes
+    end
+
   protected
     #
     def elements_per_node

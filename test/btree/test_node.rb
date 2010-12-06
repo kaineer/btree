@@ -120,4 +120,33 @@ describe "BTree node" do
       @node.subnode_for( 15 )
     end
   end
+
+  describe "#reset" do
+    before do
+      @tree = mock( "tree" )
+      @node = BTree::Node.new( @tree )
+
+      @values = %w( foo bar zee )
+
+      @offsets = %w( hax neeh weoi ahhz )
+      @subnodes = @offsets.map do |offset|
+        node = mock( "node-#{offset}" )
+        node.stubs( :offset ).returns( offset )
+        node
+      end
+    end
+
+
+    it "should accept one parameter with values" do
+      @node.reset( @values )
+
+      @node.values.should.be == @values
+    end
+
+    it "should store subnodes' offsets from second parameter" do
+      @node.reset( @values, @subnodes )
+      
+      @node.offsets.should.be == @offsets
+    end
+  end
 end
