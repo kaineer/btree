@@ -40,9 +40,37 @@ module BTree
     end
 
     #
+    #
+    #
+    def half
+      ( @tree.elements_per_node - 1 ) / 2
+    end
+
+    #
+    #
+    #
+    def left_part
+      [ self.values[ 0, half ], [] ]
+    end
+
+    #
+    #
+    #
+    def right_part
+      [ self.values[ (half + 1)..-1 ], [] ]
+    end
+
+    #
+    #
+    #
+    def median
+      self.values[ half ]
+    end
+
+    #
     def reset( values, subnodes = nil )
       @values = values
-      @offsets = subnodes.map{|node|node.offset} if subnodes
+      @offsets = subnodes.map{|node| node.is_a?( Integer ) ? node : node.offset} if subnodes
     end
 
   protected

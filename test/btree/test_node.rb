@@ -134,8 +134,9 @@ describe "BTree node" do
         node.stubs( :offset ).returns( offset )
         node
       end
-    end
 
+      @subnode_offsets = [ 1234, 5678, 9012, 3456 ]
+    end
 
     it "should accept one parameter with values" do
       @node.reset( @values )
@@ -147,6 +148,51 @@ describe "BTree node" do
       @node.reset( @values, @subnodes )
       
       @node.offsets.should.be == @offsets
+    end
+
+    it "should store offsets if second parameter consists of integers" do
+      @node.reset( @values, @subnode_offsets )
+      
+      @node.offsets.should.be == @subnode_offsets
+    end
+  end
+
+  describe "splitting" do
+    before do
+      @tree_odd = mock( "tree-odd" )
+      @tree_odd.stubs( :elements_per_node ).returns( 5 )
+      @node_odd = BTree::Node.new( @tree_odd )
+
+      @tree_even = mock( "tree-even" )
+      @tree_even.stubs( :elements_per_node ).returns( 6 )
+      @node_even = BTree::Node.new( @tree_even )
+
+      @values_odd = [ 1, 5, 7, 10, 11 ]
+      @values_even = @values_odd + [ 17 ]
+    end
+
+    it "should be left: 2, right: 2 and middle - 3rd for 5 values" do
+      @node_odd.reset( @values_odd )
+
+      values, offsets = @node_odd.left_part
+      values.size.should.be == 2
+
+      values, offsets = @node_odd.right_part
+      values.size.should.be == 2
+
+      @node_odd.median.should.be == 7
+    end
+
+    it "should be left: 2, right: 3 and middle - 3rd for 6 values" do
+      @node_even.reset( @values_even )
+      
+      values, offsets = @node_even.left_part
+      values.size.should.be == 2
+
+      values, offsets = @node_even.right_part
+      values.size.should.be == 3
+
+      @node_even.median.should.be == 7
     end
   end
 end
